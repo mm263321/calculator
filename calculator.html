@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Calculator</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #ecf0f1;
+        }
+
+        .calculator {
+            border-radius: 20px;
+            width: 300px;
+            padding: 25px;
+            background: linear-gradient(145deg, #3b4a57, #243641);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        #display {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.6em;
+            text-align: right;
+            border: none;
+            border-radius: 10px;
+            background-color: #4a5b6c;
+            color: #fff;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            background-color: #1abc9c;
+            color: white;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #16a085;
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px rgba(0, 0, 0, 0.3);
+        }
+
+        button.clear {
+            background-color: #e74c3c;
+        }
+
+        button.clear:hover {
+            background-color: #c0392b;
+        }
+
+        button.equal {
+            background-color: #3498db;
+            grid-column: span 2;
+        }
+
+        button.equal:hover {
+            background-color: #2980b9;
+        }
+
+        button.special {
+            background-color: #f39c12;
+        }
+
+        button.special:hover {
+            background-color: #d35400;
+        }
+
+        #theme-toggle {
+            margin-top: 20px;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            background: #8e44ad;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #theme-toggle:hover {
+            background-color: #71368a;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" aria-label="Calculator display" readonly>
+        <div class="buttons">
+            <!-- Number Buttons -->
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="appendToDisplay('/')">&divide;</button>
+
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="appendToDisplay('*')">&times;</button>
+
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="appendToDisplay('-')">&minus;</button>
+
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="appendToDisplay('+')">&plus;</button>
+            <button onclick="calculate()" class="equal">=</button>
+
+            <button onclick="clearDisplay()" class="clear">C</button>
+            <button onclick="backspace()" class="special">&larr;</button>
+            <button onclick="appendToDisplay('%')" class="special">%</button>
+        </div>
+        <button id="theme-toggle" onclick="toggleTheme()">Toggle Dark/Light Theme</button>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        const themeToggle = document.getElementById('theme-toggle');
+        let isDarkTheme = true;
+
+        // Append value to the display
+        function appendToDisplay(value) {
+            if (display.value === 'Error') display.value = '';
+            display.value += value;
+        }
+
+        // Clear the display
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        // Perform the calculation
+        function calculate() {
+            try {
+                const result = Function(`'use strict'; return (${display.value})`)();
+                display.value = result;
+            } catch (error) {
+                display.value = 'Error';
+            }
+        }
+
+        // Backspace function
+        function backspace() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            if (isDarkTheme) {
+                document.body.style.background = 'linear-gradient(135deg, #ecf0f1, #bdc3c7)';
+                document.body.style.color = '#2c3e50';
+                display.style.backgroundColor = '#ecf0f1';
+                display.style.color = '#2c3e50';
+                themeToggle.style.backgroundColor = '#34495e';
+                themeToggle.style.color = '#ecf0f1';
+                isDarkTheme = false;
+            } else {
+                document.body.style.background = 'linear-gradient(135deg, #2c3e50, #34495e)';
+                document.body.style.color = '#ecf0f1';
+                display.style.backgroundColor = '#4a5b6c';
+                display.style.color = '#fff';
+                themeToggle.style.backgroundColor = '#8e44ad';
+                themeToggle.style.color = '#fff';
+                isDarkTheme = true;
+            }
+        }
+    </script>
+</body>
+</html>
